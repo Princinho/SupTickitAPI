@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Suptickit.Infrastructure;
 
@@ -11,9 +12,11 @@ using Suptickit.Infrastructure;
 namespace SupTickitAPI.Migrations
 {
     [DbContext(typeof(SuptickitContext))]
-    partial class SuptickitContextModelSnapshot : ModelSnapshot
+    [Migration("20240116170442_tickets1")]
+    partial class tickets1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,7 +135,7 @@ namespace SupTickitAPI.Migrations
                     b.Property<int>("AssignedBy")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("CreatedBy")
@@ -229,7 +232,9 @@ namespace SupTickitAPI.Migrations
                 {
                     b.HasOne("SupTickit.Domain.TicketCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SupTickit.Domain.Project", null)
                         .WithMany("Tickets")

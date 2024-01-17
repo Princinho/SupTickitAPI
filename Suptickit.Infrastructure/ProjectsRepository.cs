@@ -17,12 +17,6 @@ namespace Suptickit.Infrastructure
             _db = context;
         }
 
-        public Project Add(Project project)
-        {
-            _db.Add(project);
-            _db.SaveChanges();
-            return project;
-        }
 
         public async Task AssignToCompanyAsync(int projectId, int companyId)
         {
@@ -41,9 +35,13 @@ namespace Suptickit.Infrastructure
         }
 
 
-        public void DeleteById(int id)
+        public async Task<Project> DeleteById(int id)
         {
-            throw new NotImplementedException();
+            var project = _db.Projects.Find(id);
+            if (project == null) { throw new ArgumentException("Company with id " + id + " does not exist" + nameof(project)); }
+            _db.Projects.Remove(project);
+            await  _db.SaveChangesAsync();
+            return project;
         }
 
         public async Task<IEnumerable<Project>> GetAll()
@@ -52,15 +50,11 @@ namespace Suptickit.Infrastructure
 
         }
 
-        public Project GetByCompanyId(int id)
+        public async Task<IEnumerable<Project>> GetByCompanyId(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Projects.Where(p=>p.Companies.Any(c=>c.Id==id)).ToListAsync();
         }
 
-        public Project GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
 
 
         public async Task UpdateProjectAsync(Project project, int id)
@@ -75,6 +69,18 @@ namespace Suptickit.Infrastructure
             var project = _db.Projects.Find(id) ?? throw new ArgumentException("Project does not exist");
             _db.Projects.Remove(project);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<Project> GetByIdAsync(int id)
+        {
+            return await _db.Projects.FindAsync(id);
+        }
+
+        public async Task<Project> AddAsync(Project project)
+        {
+            _db.Projects.Add(project);
+            await _db.SaveChangesAsync();
+            return project;
         }
     }
 }

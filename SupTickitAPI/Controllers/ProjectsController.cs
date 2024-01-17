@@ -36,7 +36,7 @@ namespace SupTickitAPI.Controllers
         public async Task<ActionResult<Project>> Create(ProjectInputDTO projectDTO)
         {
             var project = _mapper.Map<Project>(projectDTO);
-            var dbProject = _repository.Add(project);
+            var dbProject = await _repository.AddAsync(project);
             var projectOutputDTO = _mapper.Map<ProjectGetAllDTO>(dbProject);
             return CreatedAtAction(nameof(Create), new { id = dbProject.Id }, projectOutputDTO);
         }
@@ -44,7 +44,7 @@ namespace SupTickitAPI.Controllers
         public async Task<ActionResult<Project>> CreateAndAssignToCompanies(ProjectWithCompaniesInputDTO projectDTO)
         {
             var project = _mapper.Map<Project>(projectDTO);
-            var dbProject = _repository.Add(project);
+            var dbProject = await _repository.AddAsync(project);
             foreach (var companyId in projectDTO.CompanyIds)
             {
                 //Assign to companies

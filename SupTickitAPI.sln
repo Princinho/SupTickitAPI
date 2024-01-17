@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SupTickitAPI", "SupTickitAPI\SupTickitAPI.csproj", "{D23872DD-7195-4C09-BDAF-F46DF029F2A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SupTickit.API", "SupTickitAPI\SupTickit.API.csproj", "{D23872DD-7195-4C09-BDAF-F46DF029F2A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suptickit.Domain", "Suptickit.Domain\Suptickit.Domain.csproj", "{1B5FD63E-45E9-4768-99E1-CC0B6CD86484}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suptickit.Application", "Suptickit.Application\Suptickit.Application.csproj", "{33220867-C7B5-4430-BA4C-E7F69CB2D2D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suptickit.Infrastructure", "Suptickit.Infrastructure\Suptickit.Infrastructure.csproj", "{3E263E23-F5A4-4B9E-ACBE-F3C20845FCB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suptickit.Infrastructure", "Suptickit.Infrastructure\Suptickit.Infrastructure.csproj", "{3E263E23-F5A4-4B9E-ACBE-F3C20845FCB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

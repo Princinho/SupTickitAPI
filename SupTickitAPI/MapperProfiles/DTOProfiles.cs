@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SupTickit.API.DTOs;
 using SupTickit.Domain;
 using SupTickitAPI.DTOs;
 
@@ -14,6 +15,9 @@ namespace SupTickitAPI.MapperProfiles
             CreateMap<Project, ProjectGetAllDTO>().ReverseMap();
             CreateMap<CompanyCreateDTO, Company>();
             CreateMap<CompanyUpdateDTO, Company>();
+            CreateMap<Ticket, TicketGetAllDTO>().ReverseMap();
+            CreateMap<TicketCreateDTO, Ticket>();
+            CreateMap<TicketUpdateDTO, Ticket>();
         }
     }
 }
