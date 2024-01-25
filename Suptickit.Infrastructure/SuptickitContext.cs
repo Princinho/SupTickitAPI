@@ -16,6 +16,9 @@ namespace Suptickit.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            //modelBuilder.Entity<RoleAssignment>().Property(r=>r.RoleId).ValueGeneratedNever();
+            //modelBuilder.Entity<RoleAssignment>().Property(r=>r.UserId).ValueGeneratedNever();
+            //modelBuilder.Entity<RoleAssignment>().HasKey(r=>new {r.UserId,r.RoleId});
             
         }
         public DbSet<TicketCategory> TicketCategories { get; set; }
@@ -23,5 +26,9 @@ namespace Suptickit.Infrastructure
         public DbSet<Project> Projects { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<RoleAssignment> RoleAssignments { get; set; }
+
     }
 }

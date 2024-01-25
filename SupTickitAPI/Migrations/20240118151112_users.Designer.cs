@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Suptickit.Infrastructure;
 
@@ -11,9 +12,11 @@ using Suptickit.Infrastructure;
 namespace SupTickitAPI.Migrations
 {
     [DbContext(typeof(SuptickitContext))]
-    partial class SuptickitContextModelSnapshot : ModelSnapshot
+    [Migration("20240118151112_users")]
+    partial class users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("ProjectsId");
 
-                    b.ToTable("CompanyProject", (string)null);
+                    b.ToTable("CompanyProject");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Attachment", b =>
@@ -67,7 +70,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("Attachments", (string)null);
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Company", b =>
@@ -91,7 +94,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Message", b =>
@@ -119,7 +122,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Project", b =>
@@ -143,7 +146,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.RoleAssignment", b =>
@@ -173,7 +176,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RoleAssignments", (string)null);
+                    b.ToTable("RoleAssignment");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Ticket", b =>
@@ -226,7 +229,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.TicketCategory", b =>
@@ -258,7 +261,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("TicketCategories", (string)null);
+                    b.ToTable("TicketCategories");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.User", b =>
@@ -269,20 +272,16 @@ namespace SupTickitAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CompanyId")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Firstname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("LastLoginDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Lastname")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -298,15 +297,11 @@ namespace SupTickitAPI.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CompanyProject", b =>
@@ -378,15 +373,12 @@ namespace SupTickitAPI.Migrations
             modelBuilder.Entity("SupTickit.Domain.User", b =>
                 {
                     b.HasOne("SupTickit.Domain.Company", "Company")
-                        .WithMany("Users")
-                        .HasForeignKey("CompanyId");
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("SupTickit.Domain.Company", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Project", b =>

@@ -15,6 +15,7 @@ namespace SupTickit.Domain
         public int? CategoryId { get; set; }
         public TicketCategory? Category { get; set; }
         public List<Attachment> Attachments { get; set; }
+        public List<Message> Messages { get; set; }
         public string ProductReference { get; set; }
         public PriorityEnum Priority { get; set; }
         public TicketStatusEnum Status { get; set; }

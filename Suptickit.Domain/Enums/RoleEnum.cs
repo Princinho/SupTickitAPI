@@ -8,7 +8,7 @@ namespace Suptickit.Domain.Enums
 {
     public enum RoleEnum
     {
-        Administrator,
+        Administrator=1,
         Moderator,
         Agent,
         Customer,

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Suptickit.Application;
@@ -9,6 +10,7 @@ namespace SupTickitAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AttachmentsController : ControllerBase
     {
         private readonly IAttachmentRepository _attachmentRepository;

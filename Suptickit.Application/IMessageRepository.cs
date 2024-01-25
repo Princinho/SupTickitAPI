@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace Suptickit.Application
 {
-    public interface IMessageMessage
+    public interface IMessageRepository
     {
-        IEnumerable<Message> GetAll();
-        Message GetMessage(int id);
-        void CreateMessage(Message Message);
-        void UpdateMessage(Message Message, int id);
-        Message DeleteMessage(int id);
+        Task<IEnumerable<Message>> GetAllAsync();
+        Task<IEnumerable<Message>> GetByTicketId(int id);
+        Task<Message> GetByIdAsync(int id);
+        Task CreateAsync(Message Message);
+        Task UpdateAsync(Message Message, int id);
+        Task<Message> DeleteAsync(int id);
     }
 }

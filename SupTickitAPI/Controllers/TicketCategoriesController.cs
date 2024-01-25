@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Suptickit.Application;
+using SupTickit.API.CustomAttributes;
 using SupTickit.Domain;
 using SupTickitAPI.DTOs;
 
@@ -38,6 +39,7 @@ namespace SupTickitAPI.Controllers
         }
 
         [HttpPost]
+        [ModsLevel]
         public ActionResult<IEnumerable<TicketCategory>> CreateCategory(TicketCategoryInputDTO category)
         {
             try
@@ -53,12 +55,14 @@ namespace SupTickitAPI.Controllers
             return Ok();
         }
         [HttpPut]
+        [ModsLevel]
         public ActionResult EditCategory(TicketCategory category, int id)
         {
             _ticketCategoryRepository.UpdateCategory(category, id);
             return Ok();
         }
         [HttpDelete]
+        [ModsLevel]
         public ActionResult DeleteCategory( int id)
         {
             _ticketCategoryRepository.DeleteCategory( id);

@@ -18,6 +18,11 @@ namespace SupTickitAPI.MapperProfiles
             CreateMap<Ticket, TicketGetAllDTO>().ReverseMap();
             CreateMap<TicketCreateDTO, Ticket>();
             CreateMap<TicketUpdateDTO, Ticket>();
+            CreateMap<User, UserLoginOutDTO>();
+            CreateMap<User, UsersGetAllDTO>();
+            CreateMap<UserRegisterDto, User>();
+            CreateMap<UserWithRolesCreateDTO, User>();
+            CreateMap<Company, CompanyGetAllDTO>();
         }
     }
 }

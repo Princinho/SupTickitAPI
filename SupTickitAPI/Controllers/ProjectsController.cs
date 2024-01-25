@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Suptickit.Application;
 using Suptickit.Infrastructure;
+using SupTickit.API.CustomAttributes;
 using SupTickit.Domain;
 using SupTickitAPI.DTOs;
 
@@ -25,6 +27,7 @@ namespace SupTickitAPI.Controllers
             _categoryRepository = categoryRipository;
         }
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Project>>> GetAll()
         {
             var projects = await _repository.GetAll();
@@ -33,6 +36,7 @@ namespace SupTickitAPI.Controllers
         }
 
         [HttpPost]
+        [AdminLevel]
         public async Task<ActionResult<Project>> Create(ProjectInputDTO projectDTO)
         {
             var project = _mapper.Map<Project>(projectDTO);
@@ -41,6 +45,7 @@ namespace SupTickitAPI.Controllers
             return CreatedAtAction(nameof(Create), new { id = dbProject.Id }, projectOutputDTO);
         }
         [HttpPost("CreateWithCompanies")]
+        [AdminLevel]
         public async Task<ActionResult<Project>> CreateAndAssignToCompanies(ProjectWithCompaniesInputDTO projectDTO)
         {
             var project = _mapper.Map<Project>(projectDTO);
@@ -54,6 +59,7 @@ namespace SupTickitAPI.Controllers
             return CreatedAtAction(nameof(Create), new { id = dbProject.Id }, projectOutputDTO);
         }
         [HttpPatch]
+        [AdminLevel]
         [Route("{projectId}/assignCompany/{companyId}")]
         public async Task<ActionResult> assignToCompany(int projectId, int companyId)
         {
@@ -61,12 +67,14 @@ namespace SupTickitAPI.Controllers
             return Ok();
         }
         [HttpPut]
+        [AdminLevel]
         public async Task<ActionResult> Edit(ProjectEditDTO project, int id)
         {
             await _repository.UpdateProjectAsync(_mapper.Map<Project>(project), id);
             return Ok();
         }
         [HttpDelete]
+        [AdminLevel]
         public async Task<ActionResult> Delete(int id)
         {
             await _repository.DeleteByIdAsync(id);
