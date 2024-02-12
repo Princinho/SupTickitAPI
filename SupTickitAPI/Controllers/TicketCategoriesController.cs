@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Suptickit.Application;
 using SupTickit.API.CustomAttributes;
+using SupTickit.API.DTOs;
 using SupTickit.Domain;
 using SupTickitAPI.DTOs;
 
@@ -10,6 +12,7 @@ namespace SupTickitAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TicketCategoriesController : ControllerBase
     {
         private readonly ITicketCategoryRepository _ticketCategoryRepository;
@@ -21,30 +24,32 @@ namespace SupTickitAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TicketCategory>> GetAll()
+        public ActionResult<IEnumerable<TicketCategoryOutDTO>> GetAll()
         {
-            return Ok(_ticketCategoryRepository.GetAll());
+            return Ok(_mapper.Map<IEnumerable< TicketCategoryOutDTO>>(_ticketCategoryRepository.GetAll()));
         }
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<TicketCategory> GetCategoryById(int id)
+
+        public ActionResult<TicketCategoryOutDTO> GetCategoryById(int id)
         {
-            return _ticketCategoryRepository.GetCategoryById(id);
+            return Ok(_mapper.Map<TicketCategoryOutDTO>(_ticketCategoryRepository.GetCategoryById(id)));
         }
         [HttpGet("project/{id}")]
         public async Task<ActionResult<IEnumerable<TicketCategory>>> GetCategoriesByProjectAsync([FromQuery] int projectId)
         {
-            var categories= await _ticketCategoryRepository.GetByProjectIdAsync(projectId);
+            var categories = await _ticketCategoryRepository.GetByProjectIdAsync(projectId);
             return Ok(categories);
         }
 
         [HttpPost]
         [ModsLevel]
-        public ActionResult<IEnumerable<TicketCategory>> CreateCategory(TicketCategoryInputDTO category)
+        public ActionResult CreateCategory(TicketCategoryInputDTO category)
         {
             try
             {
                 var newCategory = _mapper.Map<TicketCategory>(category);
+                newCategory.CreatedBy = int.Parse(User.Claims.First(c => c.Type == "id").Value);
                 _ticketCategoryRepository.CreateCategory(newCategory);
             }
             catch (Exception ex)
@@ -54,18 +59,18 @@ namespace SupTickitAPI.Controllers
             }
             return Ok();
         }
-        [HttpPut]
+        [HttpPut("{id}")]
         [ModsLevel]
-        public ActionResult EditCategory(TicketCategory category, int id)
+        public ActionResult EditCategory([FromBody] TicketCategoryEditDTO category, int id)
         {
-            _ticketCategoryRepository.UpdateCategory(category, id);
+            _ticketCategoryRepository.UpdateCategory(_mapper.Map<TicketCategory>(category), id);
             return Ok();
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ModsLevel]
-        public ActionResult DeleteCategory( int id)
+        public ActionResult DeleteCategory(int id)
         {
-            _ticketCategoryRepository.DeleteCategory( id);
+            _ticketCategoryRepository.DeleteCategory(id);
             return Ok();
         }
     }

@@ -17,6 +17,6 @@ namespace Suptickit.Application
         Task<Ticket> CreateAsync(Ticket ticket);
         Task UpdateAsync(Ticket ticket, int id);
         Task<Ticket> DeleteAsync(int id);
-        Task AssignTicketAsync(int ticketId, int userId);
+        Task AssignTicketAsync(int ticketId, int userId, int moderatorId);
     }
 }

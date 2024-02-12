@@ -1,9 +1,14 @@
-﻿namespace SupTickit.Domain
+﻿using Suptickit.Domain.Enums;
+
+namespace SupTickit.Domain
 {
     public class Attachment:BaseEntity
     {
-        public string Name { get; set; }
-        public string Url { get; set; }
-        public string Type { get; set; }
+        public int TicketId { get; set; }
+        public Ticket Ticket { get; set; }
+        public string FileName { get; set; }
+        public byte[] FileData { get; set; }
+        public FileType FileType { get; set; }
+
     }
 }

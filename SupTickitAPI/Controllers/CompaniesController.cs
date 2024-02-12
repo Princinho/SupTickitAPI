@@ -38,7 +38,7 @@ namespace SupTickitAPI.Controllers
             var dbCompany=await _companyRepository.CreateAsync(_mapper.Map<Company>(company));
             return CreatedAtAction(nameof(Create), new { id = dbCompany.Id }, dbCompany);
         }
-        [HttpPut]
+        [HttpPut("{id}")]
         [AdminLevel]
         public async Task<ActionResult> Update(CompanyUpdateDTO company, int id)
         {
@@ -46,7 +46,7 @@ namespace SupTickitAPI.Controllers
             await _companyRepository.UpdateAsync(_mapper.Map<Company>(company), id);
             return Ok();
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [AdminLevel]
         public async Task<ActionResult<Company>> Delete(int id)
         {

@@ -10,7 +10,12 @@ namespace SupTickitAPI.MapperProfiles
         public DTOProfiles()
         {
             CreateMap<TicketCategoryInputDTO, TicketCategory>().ReverseMap();
+            CreateMap<TicketCategoryEditDTO, TicketCategory>().ReverseMap();
+            CreateMap<TicketCategory, TicketCategoryOutDTO>();
+            CreateMap<MessageCreateDTO, Message>();
+            CreateMap<Message, MessageGetAllDTO>();
             CreateMap<ProjectInputDTO, Project>().ReverseMap();
+            CreateMap<ProjectEditDTO, Project>().ReverseMap();
             CreateMap<ProjectWithCompaniesInputDTO, Project>();
             CreateMap<Project, ProjectGetAllDTO>().ReverseMap();
             CreateMap<CompanyCreateDTO, Company>();
@@ -23,6 +28,7 @@ namespace SupTickitAPI.MapperProfiles
             CreateMap<UserRegisterDto, User>();
             CreateMap<UserWithRolesCreateDTO, User>();
             CreateMap<Company, CompanyGetAllDTO>();
+            CreateMap<TicketLog, TicketLogDTO>();
         }
     }
 }

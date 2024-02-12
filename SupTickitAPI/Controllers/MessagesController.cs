@@ -22,30 +22,27 @@ namespace SupTickit.API.Controllers
             _repository = messagesRepository;
             _mapper = mapper;
         }
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Ticket>>> GetAllAsync()
-        //{
-        //    return Ok(await _repository.GetAllAsync());
-        //}
+        
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Ticket>> GetById(int id)
         {
             return Ok(await _repository.GetByIdAsync(id));
         }
-        [HttpGet("ticket/{id}")]
-        public async Task<ActionResult<IEnumerable<Ticket>>> GetByTicketIdAsync(int id)
+        [HttpGet("/api/Tickets/{id}/messages")]
+        public async Task<ActionResult<IEnumerable<MessageGetAllDTO>>> GetByTicketIdAsync(int id)
         {
-            return Ok(await _repository.GetByTicketId(id));
+            var messages=_mapper.Map<IEnumerable<MessageGetAllDTO>>(await _repository.GetByTicketId(id));
+            return Ok(messages);
         }
         [HttpPost]
         public async Task<ActionResult> AddAsync(MessageCreateDTO messageDTO)
         {
             var dbMessage = _mapper.Map<Message>(messageDTO);
             await _repository.CreateAsync(dbMessage);
-            return CreatedAtAction(nameof(AddAsync),new {id=dbMessage.Id },dbMessage);
+            return NoContent();
         }
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAsync(MessageUpdateDTO messageDTO, int id)
         {
             var dbMessage = _mapper.Map<Message>(messageDTO);

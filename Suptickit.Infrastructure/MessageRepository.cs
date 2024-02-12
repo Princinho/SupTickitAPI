@@ -17,7 +17,7 @@ namespace Suptickit.Infrastructure
             _context = context;
         }
         public async Task CreateAsync(Message Message)
-        {
+        {Message.DateCreated = DateTime.UtcNow;
             _context.Messages.Add(Message);
             await _context.SaveChangesAsync();
         }

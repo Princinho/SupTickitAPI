@@ -1,14 +1,13 @@
-﻿using SupTickit.Domain;
+﻿using Suptickit.Domain.Enums;
+using SupTickit.Domain;
 
 namespace SupTickitAPI.DTOs
 {
     public class AttachmentInputDTO
     {
-        public class Attachment : BaseEntity
-        {
-            public string Name { get; set; }
-            public string Url { get; set; }
-            public string Type { get; set; }
-        }
+        public IFormFile FileDetails { get; set; }
+        public FileType FileType { get; set; }
+        public int TicketId { get; set; }
+
     }
 }

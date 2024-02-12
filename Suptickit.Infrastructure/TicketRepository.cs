@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Suptickit.Application;
 using SupTickit.Domain;
+using SupTickitAPI.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,22 @@ namespace Suptickit.Infrastructure
             _context = context;
         }
 
-        public async Task AssignTicketAsync(int ticketId, int userId)
+        public async Task AssignTicketAsync(int ticketId, int userId,int moderatorId)
         {
             var ticket=await GetbyIdAsync(ticketId);
+            ticket.AssignedBy = moderatorId;
+            var log = Utils.getTicketLog(ticket);
+            _context.TicketLogs.Add(log);
             ticket.AgentId= userId;
             await _context.SaveChangesAsync();
         }
 
+
         public async Task<Ticket> CreateAsync(Ticket ticket)
         {
+            ticket.DateCreated = DateTime.UtcNow;
+            ticket.Status = TicketStatusEnum.Pending;
+            ticket.Priority = PriorityEnum.Normal;
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
             return ticket;
@@ -67,7 +75,14 @@ namespace Suptickit.Infrastructure
 
         public async Task UpdateAsync(Ticket ticket, int id)
         {
-            _context.Tickets.Update(ticket);
+            var dbTicket = await _context.Tickets.FindAsync(id);
+            dbTicket.Description = ticket.Description;
+            dbTicket.Status = ticket.Status;
+            dbTicket.AgentId = ticket.AgentId;
+            dbTicket.Priority = ticket.Priority;
+            dbTicket.CategoryId = ticket.CategoryId;
+            dbTicket.Name = ticket.Name;
+            dbTicket.ProductReference = ticket.ProductReference;
             await _context.SaveChangesAsync();
         }
     }

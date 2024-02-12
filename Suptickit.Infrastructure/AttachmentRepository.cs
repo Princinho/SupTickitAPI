@@ -11,11 +11,13 @@ namespace Suptickit.Infrastructure
     public class AttachmentRepository : IAttachmentRepository
     {
         private readonly SuptickitContext _context;
-        public AttachmentRepository(SuptickitContext context) { 
-            _context= context;
+        public AttachmentRepository(SuptickitContext context)
+        {
+            _context = context;
         }
         public void CreateAttachment(Attachment attachment)
         {
+            attachment.DateCreated = DateTime.UtcNow;
             _context.Attachments.Add(attachment);
             _context.SaveChanges();
         }
@@ -38,11 +40,21 @@ namespace Suptickit.Infrastructure
             return _context.Attachments.Find(id);
         }
 
+        public IEnumerable<Attachment> GetByTicketId(int id)
+        {
+            return _context.Attachments.Where(attachment => attachment.TicketId == id).ToList();
+        }
+
         public void UpdateAttachment(Attachment Attachment, int id)
         {
             if (Attachment.Id != id) throw new ArgumentException("ids do not match for update");
             _context.Attachments.Update(Attachment);
             _context.SaveChanges();
+        }
+        public async Task PostFileAsync(Attachment attachment)
+        {
+            var result = _context.Attachments.Add(attachment);
+            await _context.SaveChangesAsync();
         }
     }
 }

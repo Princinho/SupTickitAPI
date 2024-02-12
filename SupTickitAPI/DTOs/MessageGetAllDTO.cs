@@ -1,12 +1,11 @@
-﻿namespace SupTickit.Domain
+﻿namespace SupTickit.API.DTOs
 {
-    public class Message:BaseEntity
+    public class MessageGetAllDTO
     {
         public int Id { get; set; }
         public string Body { get; set; }
         public int TicketId { get; set; }
-        public Ticket Ticket { get; set; }
         public int UserId { get; set; }
-
+        public DateTime DateCreated { get; set; }
     }
 }

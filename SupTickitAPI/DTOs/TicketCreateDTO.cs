@@ -8,7 +8,5 @@ namespace SupTickitAPI.DTOs
         public string Description { get; set; }
         public int? CategoryId { get; set; }
         public string ProductReference { get; set; }
-        public PriorityEnum Priority { get; set; }
-        public TicketStatusEnum Status { get; set; }
     }
 }

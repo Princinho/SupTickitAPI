@@ -18,13 +18,25 @@ builder.Services.AddDbContext<SuptickitContext>(options => options.UseSqlServer(
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<ITicketCategoryRepository, TicketCategoryRepository>();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
+builder.Services.AddScoped<IRoleAssignmentRepository, RoleAssignmentsRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAttachmentRepository, AttachmentRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173/")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+        });
+});
 builder.Services.AddSwaggerGen(c =>
 {
     c.UseInlineDefinitionsForEnums();
@@ -63,5 +75,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors(b=>b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.Run();

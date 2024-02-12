@@ -27,27 +27,52 @@ namespace Suptickit.Infrastructure
         }
         public async Task<string> Login(string username, string password)
         {
-            var user = await _db.Users.Include(u=>u.RoleAssignments).FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
-            if(user is null)
+            var user = await _db.Users.Include(u => u.RoleAssignments).FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+            if (user is null)
             {
                 throw new ArgumentException("User does not exist");
-            }else if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt))
+            }
+            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 throw new ArgumentException("Wrong password");
             }
+            user.LastLoginDate = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
             return CreateToken(user);
 
         }
+        public async Task ChangePassword(string username,string oldPassword, string password)
+        {
+            var user = await _db.Users.Include(u => u.RoleAssignments).FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+            if (user is null)
+            {
+                throw new ArgumentException("User does not exist");
+            }
+            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                throw new ArgumentException("Wrong password");
+            }
+            else
+            {
+                CreatePasswordHash(password, out byte[] passwordHash, out byte[] salt);
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = salt;
+                await _db.SaveChangesAsync();
+            }
+            user.LastLoginDate = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
 
+        }
         public async Task<int> Register(User user, string password)
         {
             if (await UserExists(user.Username))
             {
-                throw new ArgumentException("User already exists"); 
+                throw new ArgumentException("User already exists");
             }
-            CreatePasswordHash(password,out byte[] passwordHash,out byte[] salt);
+            CreatePasswordHash(password, out byte[] passwordHash, out byte[] salt);
             user.PasswordHash = passwordHash;
-            user.PasswordSalt= salt;
+            user.PasswordSalt = salt;
+            user.DateCreated = DateTime.UtcNow;
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
             return user.Id;
@@ -55,23 +80,23 @@ namespace Suptickit.Infrastructure
 
         public async Task<bool> UserExists(string username)
         {
-            if (await   _db.Users.AnyAsync(user => user.Username.ToLower() == username.ToLower()))
+            if (await _db.Users.AnyAsync(user => user.Username.ToLower() == username.ToLower()))
             {
                 return true;
             }
             return false;
         }
-        private void CreatePasswordHash(string password, out byte[]passwordHash,out byte[] passwordSalt)
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            using(var hmac=new System.Security.Cryptography.HMACSHA512())
+            using (var hmac = new HMACSHA512())
             {
                 passwordSalt = hmac.Key;
-                passwordHash=hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using(var hmac=new HMACSHA512(passwordSalt))
+            using (var hmac = new HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return computedHash.SequenceEqual(passwordHash);
@@ -81,15 +106,18 @@ namespace Suptickit.Infrastructure
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                new Claim(ClaimTypes.Name,user.Username),
+                new Claim("id",user.Id.ToString()),
+                new Claim("username",user.Username),
+                new Claim("firstname",user.Firstname),
+                new Claim("lastname",user.Lastname),
                 new Claim("RoleAssignments",JsonSerializer.Serialize(user.RoleAssignments))
             };
-            var appSettingsToken = _config.GetSection("Appsettings:Token").Value;
-            if(appSettingsToken is null)
-            {
-                throw new Exception("Appsettings token is null");
-            }
+
+            if (user.CompanyId.HasValue)
+                claims.Add(new Claim("companyId", user.CompanyId?.ToString()));
+
+            var appSettingsToken = _config.GetSection("Appsettings:Token").Value ?? throw new Exception("Appsettings token is null");
+
             SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(appSettingsToken));
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -98,10 +126,11 @@ namespace Suptickit.Infrastructure
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = credentials
             };
-            JwtSecurityTokenHandler tokenHandler=new JwtSecurityTokenHandler();
-            SecurityToken token=tokenHandler.CreateToken(tokenDescriptor);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-            
+
         }
+
     }
 }

@@ -7,5 +7,6 @@
         public List<TicketCategory> Categories { get; set; }
         public List<Company> Companies { get; set; }
         public List<Ticket>Tickets { get; set; }
+        public int CreatedBy { get; set; }
     }
 }

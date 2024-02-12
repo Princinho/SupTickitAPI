@@ -23,6 +23,7 @@ namespace Suptickit.Infrastructure
         }
         public DbSet<TicketCategory> TicketCategories { get; set; }
         public DbSet<Ticket> Tickets{ get; set; }
+        public DbSet<TicketLog> TicketLogs{ get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Company> Companies { get; set; }

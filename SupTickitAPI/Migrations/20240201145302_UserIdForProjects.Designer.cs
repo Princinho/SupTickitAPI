@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Suptickit.Infrastructure;
 
@@ -11,9 +12,11 @@ using Suptickit.Infrastructure;
 namespace SupTickitAPI.Migrations
 {
     [DbContext(typeof(SuptickitContext))]
-    partial class SuptickitContextModelSnapshot : ModelSnapshot
+    [Migration("20240201145302_UserIdForProjects")]
+    partial class UserIdForProjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("ProjectsId");
 
-                    b.ToTable("CompanyProject", (string)null);
+                    b.ToTable("CompanyProject");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Attachment", b =>
@@ -66,7 +69,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("Attachments", (string)null);
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Company", b =>
@@ -90,7 +93,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Message", b =>
@@ -118,7 +121,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Project", b =>
@@ -145,7 +148,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.RoleAssignment", b =>
@@ -175,7 +178,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RoleAssignments", (string)null);
+                    b.ToTable("RoleAssignments");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Ticket", b =>
@@ -228,7 +231,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.TicketCategory", b =>
@@ -260,7 +263,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("TicketCategories", (string)null);
+                    b.ToTable("TicketCategories");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.TicketLog", b =>
@@ -314,7 +317,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("TicketLogs", (string)null);
+                    b.ToTable("TicketLogs");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.User", b =>
@@ -362,7 +365,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CompanyProject", b =>

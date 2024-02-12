@@ -26,15 +26,6 @@ namespace Suptickit.Infrastructure
             return await _db.Users.Include(u => u.RoleAssignments).ToListAsync();
         }
 
-        public async Task<Application.ServiceResponse<RoleAssignment>> AssignRole(RoleAssignment roleAssignment)
-        {
-            var user = _db.Users.Include(u => u.RoleAssignments).FirstOrDefault();
-            if (user == null) { return new Application.ServiceResponse<RoleAssignment> { Message = "User does not exist", Success = false }; }
-            _db.RoleAssignments.Add(roleAssignment);
-            await _db.SaveChangesAsync();
-            return new Application.ServiceResponse<RoleAssignment> { Message = "Successfully assigned role to user", Success = true, Data = roleAssignment };
-        }
-
 
         public async Task<Application.ServiceResponse<User>> RemoveAsync(int id)
         {
@@ -43,5 +34,19 @@ namespace Suptickit.Infrastructure
             await _db.SaveChangesAsync();
             return new Application.ServiceResponse<User> { Data = user, Success = true, Message = "User successfully deleted" };
         }
+
+        public async Task<Application.ServiceResponse<User>> GetByIdAsync(int id)
+        {
+            var user = await _db.Users.FindAsync(id);
+            if (user is null) return new Application.ServiceResponse<User> { Message = "User not found", Success = false };
+            return new Application.ServiceResponse<User> { Data = user, Success = true };
+        }
+        public async Task<Application.ServiceResponse<User>> GetByUserNameAsync(string username)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user is null) return new Application.ServiceResponse<User> { Message = "User not found", Success = false };
+            return new Application.ServiceResponse<User> { Data = user, Success = true };
+        }
+
     }
 }

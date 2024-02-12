@@ -11,10 +11,11 @@ namespace Suptickit.Application
     {
         public Task<IEnumerable<Project>> GetAll();
         public Task<Project> GetByIdAsync(int id);
-        public Task<Project> AddAsync(Project project);
+        public Task<Project> AddAsync(Project project,int userId);
         public Task<IEnumerable<Project>> GetByCompanyId(int id);
         public Task UpdateProjectAsync(Project project, int id);
         public Task AssignToCompanyAsync(int projectId,int  companyId);
+        public Task UnassignCompanyAsync(int projectId,int  companyId);
         public Task DeleteByIdAsync(int id);
         
     }

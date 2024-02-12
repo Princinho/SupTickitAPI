@@ -18,6 +18,7 @@ namespace Suptickit.Infrastructure
         }
         public void CreateCategory(TicketCategory category)
         {
+            category.DateCreated = DateTime.UtcNow;
             _context.TicketCategories.Add(category);
             _context.SaveChanges();
         }
@@ -46,6 +47,7 @@ namespace Suptickit.Infrastructure
             {
                 throw new ArgumentException("Conflicting arguments for update, ids do not match");
             }
+            //var categ=_context.TicketCategories.Find(id);
             _context.TicketCategories.Update(category);
             _context.SaveChanges();
         }

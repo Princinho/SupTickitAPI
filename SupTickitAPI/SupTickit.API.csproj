@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Suptickit.Infrastructure\Suptickit.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="FileDownloaded\" />
+  </ItemGroup>
+
 </Project>

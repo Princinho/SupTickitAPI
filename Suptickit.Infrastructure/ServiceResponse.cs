@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Suptickit.Infrastructure
 {
-    internal class ServiceResponse<T>
+    public class ServiceResponse<T>
     {
         public bool Success { get; set; }
         public T Data { get; set; }

@@ -1,4 +1,5 @@
-﻿using SupTickit.Domain;
+﻿using Suptickit.Domain.Enums;
+using SupTickit.Domain;
 
 namespace SupTickit.API.DTOs
 {
@@ -13,5 +14,6 @@ namespace SupTickit.API.DTOs
         public int? CompanyId { get; set; }
         public CompanyGetAllDTO? Company { get; set; }
         public List<RoleAssignment>? RoleAssignments { get; set; }
+        public List<RoleEnum>? Roles { get; set; }
     }
 }

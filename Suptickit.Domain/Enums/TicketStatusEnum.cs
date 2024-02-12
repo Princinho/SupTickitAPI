@@ -2,7 +2,7 @@
 {
     public enum TicketStatusEnum
     {
-        Pending,
+        Pending=1,
         Processing,
         AwaitingResponse,
         Processed,

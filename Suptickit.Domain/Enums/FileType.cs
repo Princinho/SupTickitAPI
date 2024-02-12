@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Suptickit.Domain.Enums
 {
-    public enum RoleEnum
+    public enum FileType
     {
-        Administrator=1,
-        Moderator,
-        Agent,
-        Customer
+        PDF,
+        DOCX,
+        JPG
     }
 }

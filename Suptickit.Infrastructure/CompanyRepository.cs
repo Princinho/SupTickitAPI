@@ -18,6 +18,7 @@ namespace Suptickit.Infrastructure
         }
         public async Task<Company> CreateAsync(Company company)
         {
+            company.DateCreated = DateTime.UtcNow;
             _context.Companies.Add(company);
             await _context.SaveChangesAsync();
             return company;
@@ -34,7 +35,13 @@ namespace Suptickit.Infrastructure
 
         public async Task<IEnumerable<Company>> GetAllAsync()
         {
-            return await _context.Companies.ToListAsync();
+            
+            var companies= await _context.Companies.ToListAsync();
+            foreach(var company in companies)
+            {
+                company.Projects=_context.Projects.Where(p=>p.Companies.Any(c=>c.Id==company.Id)).ToList();
+            }
+            return companies;
         }
 
         public async Task<Company> GetByIdAsync(int id)

@@ -11,7 +11,8 @@ namespace Suptickit.Application
     {
         public Task<IEnumerable<User>> GetAllAsync();
         public Task<ServiceResponse<User>> RemoveAsync(int id);
-        public Task<ServiceResponse<RoleAssignment>> AssignRole(RoleAssignment roleAssignment);
+        public Task<ServiceResponse<User>> GetByIdAsync(int id);
+        public Task<ServiceResponse<User>> GetByUserNameAsync(string username);
         public Task<User> GetByName(string name);
     }
 }
