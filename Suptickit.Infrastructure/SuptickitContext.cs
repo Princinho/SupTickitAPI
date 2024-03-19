@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Suptickit.Domain.Models;
 using SupTickit.Domain;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Suptickit.Infrastructure
         public DbSet<Message> Messages { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<RoleAssignment> RoleAssignments { get; set; }
+        public DbSet<Settings> Settings { get; set; }
 
     }
 }

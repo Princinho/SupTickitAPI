@@ -6,6 +6,7 @@ namespace SupTickitAPI.DTOs
     {
         public string Title { get; set; }
         public string Description { get; set; }
+        public string ProductReferenceName { get; set; }
         public List<int> CompanyIds { get; set; }
     }
 }

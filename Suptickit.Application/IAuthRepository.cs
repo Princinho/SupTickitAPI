@@ -13,5 +13,6 @@ namespace Suptickit.Application
         Task<string> Login(string username, string password);
         Task<bool> UserExists(string username);
         Task ChangePassword(string username, string oldPassword, string password);
+        Task ResetPassword(string username);
     }
 }

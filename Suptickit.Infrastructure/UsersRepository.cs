@@ -48,5 +48,23 @@ namespace Suptickit.Infrastructure
             return new Application.ServiceResponse<User> { Data = user, Success = true };
         }
 
+        public async Task<ServiceResponse<User>> UpdateAsync(User user, int id)
+        {
+            if (user.Id != id) return new ServiceResponse<User> { Success = false, Message = "Invalid arguments for update" };
+            try
+            {
+                var dbUser = _db.Users.FirstOrDefault(u => u.Id == user.Id);
+                dbUser.Username = user.Username;
+                dbUser.CompanyId = user.CompanyId;
+                dbUser.Firstname = user.Firstname;
+                dbUser.Lastname = user.Lastname;
+                await _db.SaveChangesAsync();
+                return new ServiceResponse<User> { Success = true, Data = dbUser };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<User> { Success = false, Message = ex.Message };
+            }
+        }
     }
 }

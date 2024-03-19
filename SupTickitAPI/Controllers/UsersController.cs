@@ -41,6 +41,18 @@ namespace SupTickit.API.Controllers
             }
                 return Ok(usersDTOs);
         }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UsersGetAllDTO>> UpdateUser(UsersEditDTO userDTO,int id)
+        {
+            var user=_mapper.Map<User>(userDTO);
+            var result=await _repo.UpdateAsync(user, id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+
+        }
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<UsersGetAllDTO>> GetByIdAsync(int id)
@@ -99,7 +111,7 @@ namespace SupTickit.API.Controllers
             }
             return BadRequest(new { result.Message });
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [AdminLevel]
         public async Task<ActionResult> Delete(int id)
         {

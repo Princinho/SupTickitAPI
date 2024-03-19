@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="FileDownloaded\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
 </Project>

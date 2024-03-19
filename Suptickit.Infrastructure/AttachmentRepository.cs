@@ -22,12 +22,19 @@ namespace Suptickit.Infrastructure
             _context.SaveChanges();
         }
 
-        public Attachment DeleteAttachment(int id)
+        public async Task<ServiceResponse<Attachment>> DeleteAttachment(int id)
         {
             var attachment = _context.Attachments.FirstOrDefault(x => x.Id == id);
-            _context.Attachments.Remove(attachment);
-            _context.SaveChanges();
-            return attachment;
+            try
+            {
+                _context.Attachments.Remove(attachment);
+                await _context.SaveChangesAsync();
+                return new ServiceResponse<Attachment> { Data = attachment, Success = true };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<Attachment> { Data = attachment, Success = false, Message = "Failed to delete attachment, " + ex.Message };
+            }
         }
 
         public IEnumerable<Attachment> GetAll()
@@ -56,5 +63,6 @@ namespace Suptickit.Infrastructure
             var result = _context.Attachments.Add(attachment);
             await _context.SaveChangesAsync();
         }
+
     }
 }

@@ -8,5 +8,6 @@
         public List<Company> Companies { get; set; }
         public List<Ticket>Tickets { get; set; }
         public int CreatedBy { get; set; }
+        public string ProductReferenceName { get; set; }
     }
 }

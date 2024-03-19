@@ -16,7 +16,7 @@ namespace Suptickit.Application
         Attachment GetAttachment(int id);
         void CreateAttachment(Attachment attachment);
         void UpdateAttachment(Attachment attachment, int id);
-        Attachment DeleteAttachment(int id);
+        Task <ServiceResponse<Attachment>> DeleteAttachment(int id);
         Task PostFileAsync(Attachment attachment);
     }
 }

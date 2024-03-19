@@ -26,6 +26,7 @@ namespace SupTickitAPI.MapperProfiles
             CreateMap<User, UserLoginOutDTO>();
             CreateMap<User, UsersGetAllDTO>();
             CreateMap<UserRegisterDto, User>();
+            CreateMap<UsersEditDTO, User>();
             CreateMap<UserWithRolesCreateDTO, User>();
             CreateMap<Company, CompanyGetAllDTO>();
             CreateMap<TicketLog, TicketLogDTO>();

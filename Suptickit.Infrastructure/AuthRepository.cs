@@ -41,20 +41,39 @@ namespace Suptickit.Infrastructure
             return CreateToken(user);
 
         }
-        public async Task ChangePassword(string username,string oldPassword, string password)
+        public async Task ChangePassword(string username, string oldPassword, string password)
         {
             var user = await _db.Users.Include(u => u.RoleAssignments).FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
             if (user is null)
             {
                 throw new ArgumentException("User does not exist");
             }
-            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            else if (!VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
             {
                 throw new ArgumentException("Wrong password");
             }
             else
             {
                 CreatePasswordHash(password, out byte[] passwordHash, out byte[] salt);
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = salt;
+                await _db.SaveChangesAsync();
+            }
+            user.LastLoginDate = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
+
+        }
+        public async Task ResetPassword(string username)
+        {
+            var user = await _db.Users.Include(u => u.RoleAssignments).FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+            if (user is null)
+            {
+                throw new ArgumentException("User does not exist");
+            }
+            
+            else
+            {
+                CreatePasswordHash("Abcd1234", out byte[] passwordHash, out byte[] salt);
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = salt;
                 await _db.SaveChangesAsync();

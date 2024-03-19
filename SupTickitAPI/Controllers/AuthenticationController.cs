@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Suptickit.Application;
 using Suptickit.Domain.Enums;
+using SupTickit.API.CustomAttributes;
 using SupTickit.API.DTOs;
 using SupTickit.Domain;
 
@@ -31,13 +32,13 @@ namespace SupTickit.API.Controllers
                 return BadRequest("Passwords do not match");
             }
             var user = _mapper.Map<User>(userDto);
-            user.CompanyId = null;
             var userId=await _authRepo.Register(user,userDto.Password);
             return Ok(userId);
         }
         [HttpPost("Login")]
         public async Task<ActionResult<UserLoginOutDTO>> Login(UserLoginDto userDto)
         {
+            
             var users = await _usersRepo.GetAllAsync();
             if (users.Count()== 0)
             {
@@ -58,6 +59,21 @@ namespace SupTickit.API.Controllers
             await _authRepo.ChangePassword(userDto.Username, userDto.OldPassword,userDto.Password);
             
             return Ok();
+        }
+        [HttpPost("ResetUserPassword/{username}")]
+        [AdminLevel]
+        public async Task<ActionResult<UserLoginOutDTO>> ResetUserPassword(string username)
+        {
+            try
+            {
+            await _authRepo.ResetPassword(username);
+            
+            return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [NonAction]
         public async void SeedAdminUser()
