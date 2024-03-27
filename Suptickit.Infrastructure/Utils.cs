@@ -1,4 +1,5 @@
 ﻿using Suptickit.Application;
+using Suptickit.Domain.Models;
 using SupTickit.Domain;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,37 @@ namespace Suptickit.Infrastructure
         {
             return user.Claims.First(c => c.Type == "username").Value;
         }
-    }
+        public static string FillToLength(string text, int length, string filler)
+        {
+            while (text.Length < length)
+            {
+                text = filler + text;
+            }
+            return text;
+        }
+        public static double CalculateTaxOrBonus(TaxOrBonus tob, IEnumerable<QuoteDetail> quoteDetails)
+        {
+            if (!tob.IsEnabled) { return 0; }
+            double result=0;
+            foreach (QuoteDetail detail in quoteDetails)
+            {
+                double tobValue = 0;
+                if (tob.ExclusionList.Split(',').Any(prodId => int.Parse(prodId) == detail.PartId))
+                {
+                    continue;
+                }
+                if (tob.IsPercentage)
+                {
+                    tobValue = detail.PricePerUnit *detail.Quantity* tob.Amount / 100;
+                }
+                else
+                {
+                    tobValue = tob.Amount;
+                }
+                result += tob.IsBonus ? -tobValue : tobValue;
+            }
 
+            return result;
+        }
+    }
 }

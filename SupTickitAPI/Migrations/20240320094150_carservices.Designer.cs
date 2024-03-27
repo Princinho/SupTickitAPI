@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Suptickit.Infrastructure;
 
@@ -11,9 +12,11 @@ using Suptickit.Infrastructure;
 namespace SupTickitAPI.Migrations
 {
     [DbContext(typeof(SuptickitContext))]
-    partial class SuptickitContextModelSnapshot : ModelSnapshot
+    [Migration("20240320094150_carservices")]
+    partial class carservices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,40 +372,7 @@ namespace SupTickitAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Suptickit.Domain.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Adress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Firstname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lastname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.Part", b =>
+            modelBuilder.Entity("Suptickit.Domain.Models.Service", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -424,20 +394,20 @@ namespace SupTickitAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PartCategoryId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<int>("ServiceCategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("PartCategoryId");
+                    b.HasIndex("ServiceCategoryId");
 
-                    b.ToTable("Parts");
+                    b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("Suptickit.Domain.Models.PartCategory", b =>
+            modelBuilder.Entity("Suptickit.Domain.Models.ServiceCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -458,93 +428,7 @@ namespace SupTickitAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PartsCategories");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.Quote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReferenceNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SubTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TotalWithTaxOrBonuses")
-                        .HasColumnType("float");
-
-                    b.Property<int>("VehicleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("Quotes");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.QuoteDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PartId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("PricePerUnit")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.Property<int>("QuoteId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PartId");
-
-                    b.HasIndex("QuoteId");
-
-                    b.ToTable("QuoteDetail");
+                    b.ToTable("ServiceCategories");
                 });
 
             modelBuilder.Entity("Suptickit.Domain.Models.Settings", b =>
@@ -562,127 +446,6 @@ namespace SupTickitAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Settings");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.TaxOrBonus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ExclusionList")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsBonus")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPercentage")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TaxOrBonuses");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.TaxOrBonusApplied", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("QuoteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TaxOrBonusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuoteId");
-
-                    b.HasIndex("TaxOrBonusId");
-
-                    b.ToTable("TaxOrBonusApplied");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.Vehicle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Make")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlateNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("VIN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("PlateNumber")
-                        .IsUnique();
-
-                    b.HasIndex("VIN")
-                        .IsUnique();
-
-                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("CompanyProject", b =>
@@ -775,83 +538,15 @@ namespace SupTickitAPI.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Suptickit.Domain.Models.Part", b =>
+            modelBuilder.Entity("Suptickit.Domain.Models.Service", b =>
                 {
-                    b.HasOne("Suptickit.Domain.Models.PartCategory", "PartCategory")
-                        .WithMany("Services")
-                        .HasForeignKey("PartCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PartCategory");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.Quote", b =>
-                {
-                    b.HasOne("Suptickit.Domain.Models.Customer", "Customer")
-                        .WithMany("Quotes")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Suptickit.Domain.Models.Vehicle", "Vehicle")
+                    b.HasOne("Suptickit.Domain.Models.ServiceCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("VehicleId")
+                        .HasForeignKey("ServiceCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
-
-                    b.Navigation("Vehicle");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.QuoteDetail", b =>
-                {
-                    b.HasOne("Suptickit.Domain.Models.Part", "Part")
-                        .WithMany("QuoteDetails")
-                        .HasForeignKey("PartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Suptickit.Domain.Models.Quote", "Quote")
-                        .WithMany("QuoteDetails")
-                        .HasForeignKey("QuoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Part");
-
-                    b.Navigation("Quote");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.TaxOrBonusApplied", b =>
-                {
-                    b.HasOne("Suptickit.Domain.Models.Quote", "Quote")
-                        .WithMany("TaxOrBonusesApplied")
-                        .HasForeignKey("QuoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Suptickit.Domain.Models.TaxOrBonus", "TaxOrBonus")
-                        .WithMany("AppliedValues")
-                        .HasForeignKey("TaxOrBonusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quote");
-
-                    b.Navigation("TaxOrBonus");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.Vehicle", b =>
-                {
-                    b.HasOne("Suptickit.Domain.Models.Customer", "Customer")
-                        .WithMany("Vehicles")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Company", b =>
@@ -878,35 +573,6 @@ namespace SupTickitAPI.Migrations
             modelBuilder.Entity("SupTickit.Domain.User", b =>
                 {
                     b.Navigation("RoleAssignments");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.Customer", b =>
-                {
-                    b.Navigation("Quotes");
-
-                    b.Navigation("Vehicles");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.Part", b =>
-                {
-                    b.Navigation("QuoteDetails");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.PartCategory", b =>
-                {
-                    b.Navigation("Services");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.Quote", b =>
-                {
-                    b.Navigation("QuoteDetails");
-
-                    b.Navigation("TaxOrBonusesApplied");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.TaxOrBonus", b =>
-                {
-                    b.Navigation("AppliedValues");
                 });
 #pragma warning restore 612, 618
         }

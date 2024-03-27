@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Suptickit.Domain.Models;
 using SupTickit.API.DTOs;
 using SupTickit.Domain;
 using SupTickitAPI.DTOs;
@@ -30,6 +31,27 @@ namespace SupTickitAPI.MapperProfiles
             CreateMap<UserWithRolesCreateDTO, User>();
             CreateMap<Company, CompanyGetAllDTO>();
             CreateMap<TicketLog, TicketLogDTO>();
+            CreateMap<PartCategoryCreateDTO, PartCategory>();
+            CreateMap<PartCategoryEditDTO, PartCategory>(MemberList.Source);
+            CreateMap<PartCreateDTO, Part>(MemberList.Source);
+            CreateMap<PartUpdateDTO, Part>(MemberList.Source);
+            CreateMap<Part, PartGetAllDTO>(MemberList.Source);
+            CreateMap<Customer, CustomerGetAllDTO>(MemberList.Source);
+            CreateMap<CustomerUpdateDTO, Customer>(MemberList.Source);
+            CreateMap<CustomerCreateDTO, Customer>(MemberList.Source);
+            CreateMap<Vehicle, VehicleGetAllDTO>(MemberList.Source);
+            CreateMap<VehicleUpdateDTO, Vehicle>(MemberList.Source);
+            CreateMap<VehicleCreateDTO, Vehicle>(MemberList.Source);
+            CreateMap<TaxOrBonus, TaxOrBonusGetAllDTO>(MemberList.Source);
+            CreateMap<TaxOrBonusUpdateDTO, TaxOrBonus>(MemberList.Source);
+            CreateMap<TaxOrBonusCreateDTO, TaxOrBonus>(MemberList.Source);
+            CreateMap<Quote, QuoteGetAllDTO>(MemberList.Source);
+            CreateMap<QuoteUpdateDTO, Quote>();
+            CreateMap<QuoteCreateDTO, Quote>(MemberList.Source);
+            CreateMap<QuoteDetailCreateDTO, QuoteDetail>(MemberList.Source);
+            CreateMap<QuoteDetailUpdateDTO, QuoteDetail>(MemberList.Source);
+            CreateMap<TaxOrBonusApplied, TaxOrBonusAppliedGetDTO>(MemberList.Source);
+            CreateMap<QuoteDetail, QuoteDetailGetAllDTO>(MemberList.Source);
         }
     }
 }

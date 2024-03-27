@@ -17,12 +17,17 @@ namespace Suptickit.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<RoleAssignment>().Property(r=>r.RoleId).ValueGeneratedNever();
-            //modelBuilder.Entity<RoleAssignment>().Property(r=>r.UserId).ValueGeneratedNever();
-            //modelBuilder.Entity<RoleAssignment>().HasKey(r=>new {r.UserId,r.RoleId});
-            
+            modelBuilder.Entity<Vehicle>().HasIndex(u => u.VIN).IsUnique();
+            modelBuilder.Entity<Vehicle>().HasIndex(u => u.PlateNumber).IsUnique();
         }
         public DbSet<TicketCategory> TicketCategories { get; set; }
+        public DbSet<PartCategory> PartsCategories { get; set; }
+        public DbSet<Part> Parts { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Quote> Quotes { get; set; }
+        public DbSet<QuoteDetail> QuoteDetail { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<TaxOrBonus> TaxOrBonuses { get; set; }
         public DbSet<Ticket> Tickets{ get; set; }
         public DbSet<TicketLog> TicketLogs{ get; set; }
         public DbSet<Project> Projects { get; set; }

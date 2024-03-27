@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Suptickit.Infrastructure;
 
@@ -11,9 +12,11 @@ using Suptickit.Infrastructure;
 namespace SupTickitAPI.Migrations
 {
     [DbContext(typeof(SuptickitContext))]
-    partial class SuptickitContextModelSnapshot : ModelSnapshot
+    [Migration("20240326132929_ExclusionLists")]
+    partial class ExclusionLists
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +38,21 @@ namespace SupTickitAPI.Migrations
                     b.HasIndex("ProjectsId");
 
                     b.ToTable("CompanyProject");
+                });
+
+            modelBuilder.Entity("QuoteTaxOrBonus", b =>
+                {
+                    b.Property<int>("QuotesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TaxOrBonusesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("QuotesId", "TaxOrBonusesId");
+
+                    b.HasIndex("TaxOrBonusesId");
+
+                    b.ToTable("QuoteTaxOrBonus");
                 });
 
             modelBuilder.Entity("SupTickit.Domain.Attachment", b =>
@@ -606,35 +624,6 @@ namespace SupTickitAPI.Migrations
                     b.ToTable("TaxOrBonuses");
                 });
 
-            modelBuilder.Entity("Suptickit.Domain.Models.TaxOrBonusApplied", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("QuoteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TaxOrBonusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuoteId");
-
-                    b.HasIndex("TaxOrBonusId");
-
-                    b.ToTable("TaxOrBonusApplied");
-                });
-
             modelBuilder.Entity("Suptickit.Domain.Models.Vehicle", b =>
                 {
                     b.Property<int>("Id")
@@ -696,6 +685,21 @@ namespace SupTickitAPI.Migrations
                     b.HasOne("SupTickit.Domain.Project", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("QuoteTaxOrBonus", b =>
+                {
+                    b.HasOne("Suptickit.Domain.Models.Quote", null)
+                        .WithMany()
+                        .HasForeignKey("QuotesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Suptickit.Domain.Models.TaxOrBonus", null)
+                        .WithMany()
+                        .HasForeignKey("TaxOrBonusesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -824,25 +828,6 @@ namespace SupTickitAPI.Migrations
                     b.Navigation("Quote");
                 });
 
-            modelBuilder.Entity("Suptickit.Domain.Models.TaxOrBonusApplied", b =>
-                {
-                    b.HasOne("Suptickit.Domain.Models.Quote", "Quote")
-                        .WithMany("TaxOrBonusesApplied")
-                        .HasForeignKey("QuoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Suptickit.Domain.Models.TaxOrBonus", "TaxOrBonus")
-                        .WithMany("AppliedValues")
-                        .HasForeignKey("TaxOrBonusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quote");
-
-                    b.Navigation("TaxOrBonus");
-                });
-
             modelBuilder.Entity("Suptickit.Domain.Models.Vehicle", b =>
                 {
                     b.HasOne("Suptickit.Domain.Models.Customer", "Customer")
@@ -900,13 +885,6 @@ namespace SupTickitAPI.Migrations
             modelBuilder.Entity("Suptickit.Domain.Models.Quote", b =>
                 {
                     b.Navigation("QuoteDetails");
-
-                    b.Navigation("TaxOrBonusesApplied");
-                });
-
-            modelBuilder.Entity("Suptickit.Domain.Models.TaxOrBonus", b =>
-                {
-                    b.Navigation("AppliedValues");
                 });
 #pragma warning restore 612, 618
         }
